@@ -6,6 +6,12 @@ A simple calculator application built with Python and tkinter.
 
 This project uses only Python standard library modules. No external dependencies are required.
 
+## Installation
+
+```bash
+pip install -r requirements.txt
+```
+
 ## Running the Application
 
-Run `python ai_calculator.py` to start the calculator program.
+**Entry Point:** Run `python ai_calculator.py` to start the calculator program.
