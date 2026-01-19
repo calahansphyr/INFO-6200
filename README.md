@@ -20,13 +20,13 @@ pip install -r requirements.txt
 
 ### Prompt: Fix calculator errors and rewrite ai_calculator.py
 
-**My Prompt:** I asked the AI to fix errors in my calculator application and rewrite the `ai_calculator.py` file to make it functional.
+**My Prompt:** My calculator is broken. Please fix it.
 
-**AI's Response:** The AI identified that the original calculator code had several issues including incorrect method implementations and widget management problems. The AI completely rewrote the calculator using a cleaner architecture with proper indentation including:
+**AI's Response:** The AI identified several issues in the original calculator code, such as incorrect method implementations and widget management problems. The AI completely rewrote the calculator using a cleaner architecture with proper indentation, including:
 - A `Calculator` class that properly manages the GUI using tkinter and ttk
 - A string-based expression system (`self.expression`) that accumulates button presses
 - Proper use of `StringVar` for managing the display text
 - A simplified button creation loop that handles the layout programmatically
 - Error handling in the `calculate()` method using try/except blocks
 
-**How It Helped:** The AI's response solved the core functionality issues by restructuring the entire calculator implementation. The new code eliminated the errors I was experiencing and created a working calculator that properly handles button presses, displays expressions, performs calculations, and handles errors gracefully. This rewrite made the calculator fully functional and ready for use.
+**How It Helped:** The AI's response solved the core functionality issues by restructuring the entire calculator implementation. The new code eliminated the errors I was experiencing and created a working calculator that properly handles button presses, displays expressions, performs calculations, and handles errors gracefully. This rewrite made the calculator fully functional and ready for use. Given my lack of experience with Python, this was crucial.
