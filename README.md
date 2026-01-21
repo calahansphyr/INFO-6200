@@ -37,3 +37,5 @@ pip install -r requirements.txt
 - Error handling in the `calculate()` method using try/except blocks
 
 **How It Helped:** The AI's response solved the core functionality issues by restructuring the entire calculator implementation. The new code eliminated the errors I was experiencing and created a working calculator that properly handles button presses, displays expressions, performs calculations, and handles errors gracefully. This rewrite made the calculator fully functional and ready for use. Given my lack of experience with Python, this was crucial.
+
+Using AI to rebuild the GUI flow showed me how to structure tkinter apps cleanly while still meeting the assignment’s launch-from-CLI requirement.
