@@ -1,10 +1,17 @@
 # AI Calculator
 
-A simple calculator application built with Python and tkinter.
+A simple calculator application built with Python and launched from the command line. The program opens a GUI (tkinter) calculator that handles the required sequential number/operation/number flow.
 
 ## Requirements
 
 This project uses only Python standard library modules. No external dependencies are required.
+
+Behavior (per assignment and clarification):
+- Launch from the command line: `python calculator.py`
+- Opens a GUI calculator (tkinter)
+- Supports sequential entry of first number, operation (+, -, *, /), and second number via buttons
+- Displays results clearly
+- Friendly error handling for invalid input and division by zero
 
 ## Installation
 
@@ -18,7 +25,7 @@ pip install -r requirements.txt
 
 ## AI Collaboration Log
 
-### Prompt: Fix calculator errors and rewrite ai_calculator.py
+### Prompt: Fix calculator errors and rewrite calculator.py
 
 **My Prompt:** My calculator is broken. Please fix it.
 
