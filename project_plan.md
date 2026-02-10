@@ -10,6 +10,11 @@ The Personal Library Manager is a Python-based CLI (Command Line Interface) appl
 ## Section 2: Core Features (Evolution & Maturity)
 The feature set has been expanded from simple list management to include automation and persistence, transforming the tool from a temporary script into a usable application.
 
+**Currently Implemented:**
+* **Add a Book:** Manual entry of title, author, and page count. Each book is stored as a dictionary using the full 8-field data model (see Section 3); fields not collected from the user are populated with sensible defaults.
+* **List all Books:** Iterates through the master list of book dictionaries and displays each entry in a human-readable format.
+* **Exit:** Graceful exit from the application.
+
 * **Smart Add via ISBN (New):**
     The user can input a book's ISBN (e.g., 9780140328721). The application will query the Open Library API to automatically retrieve and populate the Title, Author, and Page Count. The user can confirm or edit these details before saving. *Fallback: Manual entry is available if offline.*
 * **Data Persistence (New):**
@@ -38,6 +43,8 @@ The data model has been updated to support API integration and persistent storag
 | `pages` | Integer | The total number of pages in the book. |
 | `is_read` | Boolean | A True/False flag indicating if the book has been completed. |
 | `rating` | Float | A 0.0 to 5.0 star rating (optional, defaults to 0.0). |
+
+**Current Implementation (CLI):** The application stores each book as a Python dictionary with all 8 keys. When adding a book, the user provides only `title`, `author`, and `pages`. The remaining fields are auto-populated: `id` (sequential integer), `isbn` and `genre` (empty strings), `is_read` (`False`), and `rating` (`0.0`).
 
 ## Section 4: Development Strategy & Tools
 This project utilizes modern AI-assisted workflows to accelerate development and ensure code quality despite the timeline constraints.
