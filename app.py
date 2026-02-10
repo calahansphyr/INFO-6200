@@ -12,13 +12,19 @@ def add_book() -> None:
     author = input("Enter author: ").strip()
     page_count_input = input("Enter page count: ").strip()
     try:
-        page_count = int(page_count_input)
+        pages = int(page_count_input)
     except ValueError:
-        page_count = 0
+        pages = 0
+    next_id = max((b["id"] for b in library), default=0) + 1
     book = {
+        "id": next_id,
+        "isbn": "",
         "title": title,
         "author": author,
-        "page_count": page_count,
+        "genre": "",
+        "pages": pages,
+        "is_read": False,
+        "rating": 0.0,
     }
     library.append(book)
     print("Book added successfully.\n")
@@ -33,7 +39,7 @@ def list_books() -> None:
     for i, book in enumerate(library, start=1):
         print(
             f"{i}. {book['title']} by {book['author']} "
-            f"({book['page_count']} pages)"
+            f"({book['pages']} pages)"
         )
     print()
 
