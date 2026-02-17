@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "isbn": "9780140328721",
+    "title": "The Hobbit",
+    "author": "J.R.R. Tolkien",
+    "genre": "Fantasy",
+    "pages": 366,
+    "is_read": true,
+    "rating": 4.5
+  },
+  {
+    "id": 2,
+    "isbn": "",
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "genre": "Technology",
+    "pages": 464,
+    "is_read": false,
+    "rating": 0.0
+  }
+]

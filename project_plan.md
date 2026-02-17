@@ -17,8 +17,8 @@ The feature set has been expanded from simple list management to include automat
 
 * **Smart Add via ISBN (New):**
     The user can input a book's ISBN (e.g., 9780140328721). The application will query the Open Library API to automatically retrieve and populate the Title, Author, and Page Count. The user can confirm or edit these details before saving. *Fallback: Manual entry is available if offline.*
-* **Data Persistence (New):**
-    The application will automatically load the library inventory from a local JSON file upon startup and save any changes to the file upon exit. This ensures the user's library is not lost when the program closes.
+* **Data Persistence (New - Assignment 6 Implemented):**
+    The application automatically loads the library inventory from a local JSON file (e.g., `data.json`) on startup. If the file does not exist, it starts with an empty library without crashing. Whenever the data is modified (e.g., a book is added), the updated data set is **immediately** written back to the file in a structured, human-readable JSON format. This ensures the user's library persists between sessions and avoids data loss.
 * **Analytics Dashboard (New):**
     A new menu option that calculates and displays key metrics, such as "Total Books Owned," "Total Pages Read," and "Completion Rate %."
 * **Search by Author:**

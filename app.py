@@ -1,9 +1,32 @@
 """
 Personal Library Manager - Graduate School Assignment
 Stores books in a global list and provides menu-driven add/list/exit.
+Loads data from data.json on startup and saves immediately on modification.
 """
 
-library = []
+import json
+from pathlib import Path
+
+DATA_FILE = Path(__file__).parent / "data.json"
+
+library: list[dict] = []
+
+
+def load_library() -> list[dict]:
+    """Load library from data.json. Returns empty list if file missing or invalid."""
+    if not DATA_FILE.exists():
+        return []
+    try:
+        with open(DATA_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return []
+
+
+def save_library() -> None:
+    """Write the current library to data.json in human-readable JSON format."""
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(library, f, indent=2, ensure_ascii=False)
 
 
 def add_book() -> None:
@@ -27,6 +50,7 @@ def add_book() -> None:
         "rating": 0.0,
     }
     library.append(book)
+    save_library()
     print("Book added successfully.\n")
 
 
@@ -46,6 +70,9 @@ def list_books() -> None:
 
 def main() -> None:
     """Run the main menu loop."""
+    global library
+    library = load_library()
+
     while True:
         print("Personal Library Manager")
         print("-----------------------")
