@@ -1,2 +1,5 @@
 # This project uses only Python standard library modules (tkinter)
 # No external dependencies are required
+
+# Flask for web_app.py
+flask>=3.0.0

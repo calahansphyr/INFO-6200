@@ -1,17 +1,16 @@
-# AI Calculator
+# Personal Library Manager
 
-A simple command-line calculator application built with Python. The program sequentially prompts the user for a first number, an arithmetic operation, and a second number, then displays the result.
+A Python project including a command-line Personal Library Manager and a minimal Flask web application. The library manager stores books in a JSON file and provides a menu-driven interface to add and list books.
+
+## Project Structure
+
+- **app.py** — Personal Library Manager (command-line). Stores books in `data.json` and provides options to add books, list all books, and exit.
+- **web_app.py** — Minimal Flask web server. Displays "Hello, Web!" at the root URL.
 
 ## Requirements
 
-This project uses only Python standard library modules. No external dependencies are required.
-
-The calculator sequentially prompts the user for:
-1. First number
-2. Arithmetic operation (+, -, *, /)
-3. Second number
-
-It then calculates and displays the result, with proper error handling for invalid inputs and division by zero.
+- **app.py** uses only Python standard library modules (no external dependencies).
+- **web_app.py** requires Flask. See `requirements.txt`.
 
 ## Installation
 
@@ -19,23 +18,25 @@ It then calculates and displays the result, with proper error handling for inval
 pip install -r requirements.txt
 ```
 
-## Running the Application
+## Running the Applications
 
-**Entry Point:** Run `python calculator.py` to start the calculator program.
+### Personal Library Manager (command-line)
 
-## AI Collaboration Log
+```bash
+python app.py
+```
 
-### Prompt: Fix calculator errors and rewrite calculator.py
+Menu options:
+1. Add a Book (title, author, page count)
+2. List all Books
+3. Exit
 
-**My Prompt:** My calculator is broken. Please fix it.
+Data is persisted in `data.json` in the project directory.
 
-**AI's Response:** The AI identified several issues in the original calculator code, such as incorrect method implementations and widget management problems. The AI completely rewrote the calculator using a cleaner architecture with proper indentation, including:
-- Separate functions for getting user input (`get_number()` and `get_operation()`)
-- A `calculate()` function that handles all four operations (+, -, *, /)
-- Proper error handling with specific, friendly error messages
-- A clear `main()` function that orchestrates the sequential prompts
-- Input validation loops that reprompt until valid input is received
+### Flask Web App
 
-**How It Helped:** The AI's response solved the core functionality issues by restructuring the entire calculator implementation. The new code eliminated the errors I was experiencing and created a working calculator that properly handles user input, performs calculations, and handles errors gracefully. The sequential prompting system works exactly as required by the assignment rubric, and the error handling provides specific, user-friendly messages for both error cases (non-numeric input and division by zero). This rewrite made the calculator fully functional and ready for use. Given my lack of experience with Python, this was crucial.
+```bash
+python web_app.py
+```
 
-Using AI to rebuild the GUI flow showed me how to structure tkinter apps cleanly while still meeting the assignment’s launch-from-CLI requirement.
+Then open http://127.0.0.1:5000/ in your browser.
