@@ -1,11 +1,11 @@
-# Project Plan: Personal Library Manager (v2.0)
+# Project Plan: Personal Library Manager (v2.1)
 
 ## Section 1: Project Overview
 **Project Title:** Personal Library Manager
 **Development Methodology:** AI-Assisted Iterative Prototyping
 
 **Summary:**
-The Personal Library Manager is a Python-based CLI (Command Line Interface) application designed to help readers organize their book collections. While the initial concept focused on manual entry, this evolved version leverages open APIs to automate data entry and ensures data persistence between sessions. The application serves as a centralized tool for tracking inventory and reading progress, designed for users who want a lightweight, distraction-free management tool with modern conveniences.
+The Personal Library Manager is a Python-based CLI (Command Line Interface) application designed to help readers organize their book collections. While the initial concept focused on manual entry, this evolved version leverages open APIs to automate data entry and ensures data persistence between sessions. The application serves as a centralized tool for tracking inventory and reading progress, designed for users who want a lightweight, distraction-free management tool with modern conveniences. Following an incremental approach, a minimal Flask web interface has been introduced to explore browser-based access, with the CLI remaining the primary interface for the current iteration.
 
 ## Section 2: Core Features (Evolution & Maturity)
 The feature set has been expanded from simple list management to include automation and persistence, transforming the tool from a temporary script into a usable application.
@@ -27,6 +27,16 @@ The feature set has been expanded from simple list management to include automat
     The user can select a specific book from their collection and toggle its status from "Unread" to "Read."
 * **Remove a Book:**
     The user can permanently delete a book record from the library.
+
+### Interface Evolution (v2.1)
+*The introduction of a Flask web app (`web_app.py`) represents an incremental pivot toward browser-based access.*
+
+**Current State:**
+- **CLI (`app.py`):** Primary interface; full menu-driven functionality.
+- **Web (`web_app.py`):** Minimal Flask app serving a single route ("Hello, Web!") at http://127.0.0.1:5000/.
+
+**Planned Next Step (Incremental):**
+Share the existing `data.json` persistence with the web app. Add a `/library` route that loads and returns the library as JSON. This establishes the data bridge without duplicating persistence logic and sets the stage for future web-based list/add flows.
 
 ## Section 3: Data Model
 **Record Entity:** `Book`
@@ -55,3 +65,4 @@ This project utilizes modern AI-assisted workflows to accelerate development and
 1.  **Code Generation:** Cursor will be utilized to generate boilerplate code for file I/O (handling the JSON save/load cycle) and to construct the specific HTTP requests required for the Open Library API.
 2.  **Refactoring & Optimization:** AI tools will be used to review code blocks for efficiency (e.g., converting standard loops to list comprehensions for the search features) and ensuring PEP 8 style compliance.
 3.  **Debugging:** Runtime errors will be diagnosed using AI context awareness to rapidly identify logic gaps or data type mismatches, particularly when parsing the JSON response from the API.
+4.  **Dual-Interface Development:** New features will be designed so they can serve both CLI and web clients (e.g., shared logic in services/modules). The Flask app will gradually adopt routes that mirror CLI actions, starting with read-only operations (e.g., viewing the library).
