@@ -5,7 +5,7 @@
 **Development Methodology:** AI-Assisted Iterative Prototyping
 
 **Summary:**
-The Personal Library Manager is a Python-based CLI (Command Line Interface) application designed to help readers organize their book collections. While the initial concept focused on manual entry, this evolved version leverages open APIs to automate data entry and ensures data persistence between sessions. The application serves as a centralized tool for tracking inventory and reading progress, designed for users who want a lightweight, distraction-free management tool with modern conveniences. Following an incremental approach, a minimal Flask web interface has been introduced to explore browser-based access, with the CLI remaining the primary interface for the current iteration.
+The Personal Library Manager is a Python-based CLI (Command Line Interface) application designed to help readers organize their book collections. While the initial concept focused on manual entry, this evolved version leverages open APIs to automate data entry and ensures data persistence between sessions. The application serves as a centralized tool for tracking inventory and reading progress, designed for users who want a lightweight, distraction-free management tool with modern conveniences. Following an incremental approach, a minimal Flask web interface was initially introduced to explore browser-based access, with the CLI remaining the primary interface. In the latest iteration, this web interface has matured into a fully functional add-book form that reuses the same persistent JSON data store as the CLI, demonstrating how the project’s planning and architecture support continuous improvement over time.
 
 ## Section 2: Core Features (Evolution & Maturity)
 The feature set has been expanded from simple list management to include automation and persistence, transforming the tool from a temporary script into a usable application.
@@ -28,15 +28,18 @@ The feature set has been expanded from simple list management to include automat
 * **Remove a Book:**
     The user can permanently delete a book record from the library.
 
+* **Web-based Add Book Form (New – Assignment 7):**
+    A Flask-powered `/add` route now presents an HTML form that collects all user-facing fields of the `Book` model (ISBN, Title, Author, Genre, Pages, Read status, and Rating). When submitted, the form issues a POST request to the same route, where the server validates and structures the data into a `Book` dictionary, assigns a new sequential `id`, appends it to the in-memory library, and persists the updated collection back to `data.json`. After a successful save, the user is redirected to a page that lists all books, creating a cohesive web-based flow that mirrors and extends the original CLI-driven experience.
+
 ### Interface Evolution (v2.1)
 *The introduction of a Flask web app (`web_app.py`) represents an incremental pivot toward browser-based access.*
 
 **Current State:**
 - **CLI (`app.py`):** Primary interface; full menu-driven functionality.
-- **Web (`web_app.py`):** Minimal Flask app serving a single route ("Hello, Web!") at http://127.0.0.1:5000/.
+- **Web (`web_app.py`):** Flask app that now exposes multiple routes, including a home page, a `/books` listing view backed by `data.json`, and an `/add` route that serves and processes an HTML form for creating new `Book` records using the same persistence logic as the CLI.
 
 **Planned Next Step (Incremental):**
-Share the existing `data.json` persistence with the web app. Add a `/library` route that loads and returns the library as JSON. This establishes the data bridge without duplicating persistence logic and sets the stage for future web-based list/add flows.
+Continue expanding the web interface so that more CLI features are available in the browser. Near-term iterations (v2.2 and beyond) will focus on adding read-only and mutating operations that parallel the CLI menu, such as viewing analytics, searching by author, and toggling the read status directly from the web UI. Over time, the plan is to refactor shared logic (e.g., persistence and business rules) into reusable modules so that both the CLI and Flask layers can evolve without duplication, preserving a clear trajectory of improvement from simple scripts to a multi-interface application.
 
 ## Section 3: Data Model
 **Record Entity:** `Book`
@@ -65,4 +68,5 @@ This project utilizes modern AI-assisted workflows to accelerate development and
 1.  **Code Generation:** Cursor will be utilized to generate boilerplate code for file I/O (handling the JSON save/load cycle) and to construct the specific HTTP requests required for the Open Library API.
 2.  **Refactoring & Optimization:** AI tools will be used to review code blocks for efficiency (e.g., converting standard loops to list comprehensions for the search features) and ensuring PEP 8 style compliance.
 3.  **Debugging:** Runtime errors will be diagnosed using AI context awareness to rapidly identify logic gaps or data type mismatches, particularly when parsing the JSON response from the API.
-4.  **Dual-Interface Development:** New features will be designed so they can serve both CLI and web clients (e.g., shared logic in services/modules). The Flask app will gradually adopt routes that mirror CLI actions, starting with read-only operations (e.g., viewing the library).
+4.  **Dual-Interface Development:** New features will be designed so they can serve both CLI and web clients (e.g., shared logic in services/modules). The Flask app will gradually adopt routes that mirror CLI actions, starting with read-only operations (e.g., viewing the library) and then expanding to full create/update/delete flows, such as the new web-based add-book form.
+5.  **Iterative Planning & Continuous Improvement:** Each assignment iteration intentionally pushes the design forward—from a basic CLI, to persistent storage and API integration, to a shared web interface that reuses the same `load_library()` / `save_library()` persistence logic. This incremental planning approach ensures that changes are small, testable, and traceable in the project documentation, making the evolution of the system explicit rather than accidental.

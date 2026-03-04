@@ -18,5 +18,15 @@
     "pages": 464,
     "is_read": false,
     "rating": 0.0
+  },
+  {
+    "id": 3,
+    "isbn": "1234567890",
+    "title": "Test Book From Web",
+    "author": "Web Author",
+    "genre": "Test",
+    "pages": 123,
+    "is_read": true,
+    "rating": 4.5
   }
 ]

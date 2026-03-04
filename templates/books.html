@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Your Books</title>
+  </head>
+  <body>
+    <h1>Your Books</h1>
+    <nav>
+      <a href="{{ url_for('add') }}">Add Another Book</a> |
+      <a href="{{ url_for('index') }}">Home</a>
+    </nav>
+    {% if books %}
+    <ul>
+      {% for book in books %}
+      <li>
+        {{ loop.index }}.
+        {{ book.title }} by {{ book.author }} ({{ book.pages }} pages)
+        {% if book.is_read %}- Read{% else %}- Not read{% endif %}
+        {% if book.rating %}- Rating: {{ book.rating }}{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No books found. <a href="{{ url_for('add') }}">Add your first book</a>.</p>
+    {% endif %}
+  </body>
+</html>
+

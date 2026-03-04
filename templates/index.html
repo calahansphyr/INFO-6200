@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Personal Library Manager</title>
+  </head>
+  <body>
+    <h1>Personal Library Manager</h1>
+    <nav>
+      <a href="{{ url_for('add') }}">Add a Book</a> |
+      <a href="{{ url_for('list_books') }}">View All Books</a>
+    </nav>
+    {% if books %}
+    <h2>Current Library (Summary)</h2>
+    <ul>
+      {% for book in books %}
+      <li>
+        {{ book.title }} by {{ book.author }} ({{ book.pages }} pages)
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>Your library is currently empty. Start by <a href="{{ url_for('add') }}">adding a book</a>.</p>
+    {% endif %}
+  </body>
+</html>
+
