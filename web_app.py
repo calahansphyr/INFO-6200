@@ -19,14 +19,15 @@ app = Flask(__name__)
 
 @app.route("/")
 def index() -> str:
-    """Home page with basic navigation."""
+    """Main route: home page. Reads and parses all data from JSON, passes collection to template."""
     books = load_library()
     return render_template("index.html", books=books)
 
 
 @app.route("/books")
+@app.route("/items")
 def list_books() -> str:
-    """Display all books in the library."""
+    """Display all items from persistent JSON. GET: read/parse data.json, pass collection to Jinja2 for rendering."""
     books = load_library()
     return render_template("books.html", books=books)
 

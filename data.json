@@ -11,7 +11,7 @@
   },
   {
     "id": 2,
-    "isbn": "",
+    "isbn": "9780132350884",
     "title": "Clean Code",
     "author": "Robert C. Martin",
     "genre": "Technology",
@@ -21,10 +21,80 @@
   },
   {
     "id": 3,
-    "isbn": "1234567890",
-    "title": "Test Book From Web",
-    "author": "Web Author",
-    "genre": "Test",
+    "isbn": "9780061120084",
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "genre": "Fiction",
+    "pages": 336,
+    "is_read": true,
+    "rating": 5.0
+  },
+  {
+    "id": 4,
+    "isbn": "9780743273565",
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "genre": "Fiction",
+    "pages": 180,
+    "is_read": true,
+    "rating": 4.5
+  },
+  {
+    "id": 5,
+    "isbn": "9780141439518",
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "genre": "Romance",
+    "pages": 432,
+    "is_read": true,
+    "rating": 4.0
+  },
+  {
+    "id": 6,
+    "isbn": "9780316769488",
+    "title": "The Catcher in the Rye",
+    "author": "J.D. Salinger",
+    "genre": "Fiction",
+    "pages": 277,
+    "is_read": true,
+    "rating": 4.0
+  },
+  {
+    "id": 7,
+    "isbn": "9780385472572",
+    "title": "Things Fall Apart",
+    "author": "Chinua Achebe",
+    "genre": "Fiction",
+    "pages": 209,
+    "is_read": false,
+    "rating": 0.0
+  },
+  {
+    "id": 8,
+    "isbn": "9780143105425",
+    "title": "1984",
+    "author": "George Orwell",
+    "genre": "Dystopian",
+    "pages": 328,
+    "is_read": true,
+    "rating": 4.5
+  },
+  {
+    "id": 9,
+    "isbn": "9780140283334",
+    "title": "Lord of the Flies",
+    "author": "William Golding",
+    "genre": "Fiction",
+    "pages": 224,
+    "is_read": true,
+    "rating": 4.0
+  },
+  {
+    "id": 10,
+    "isbn": "9780679720201",
+    "title": "The Stranger",
+    "author": "Albert Camus",
+    "genre": "Philosophical Fiction",
     "pages": 123,
     "is_read": true,
     "rating": 4.5

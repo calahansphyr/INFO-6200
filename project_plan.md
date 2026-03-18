@@ -31,12 +31,15 @@ The feature set has been expanded from simple list management to include automat
 * **Web-based Add Book Form (New – Assignment 7):**
     A Flask-powered `/add` route now presents an HTML form that collects all user-facing fields of the `Book` model (ISBN, Title, Author, Genre, Pages, Read status, and Rating). When submitted, the form issues a POST request to the same route, where the server validates and structures the data into a `Book` dictionary, assigns a new sequential `id`, appends it to the in-memory library, and persists the updated collection back to `data.json`. After a successful save, the user is redirected to a page that lists all books, creating a cohesive web-based flow that mirrors and extends the original CLI-driven experience.
 
+* **Bringing Your Data to the Web (Assignment 9):**
+    The Flask app exposes main routes (`/`, `/books`, and `/items`) that handle GET requests. Each list route calls `load_library()` (from `app.py`) to read and parse all data from the persistent `data.json` file, then passes the resulting collection to `render_template()`. The Jinja2 template (`templates/books.html`) receives this data collection, uses a `{% for book in books %}` loop to iterate through it, and generates HTML (a table) to display the details of each item—id, title, author, genre, pages, read status, rating, and ISBN—in a readable format. This single template plus server-side data replaces the need for many static HTML pages; one dynamic page is driven by the current contents of the JSON "database."
+
 ### Interface Evolution (v2.1)
 *The introduction of a Flask web app (`web_app.py`) represents an incremental pivot toward browser-based access.*
 
 **Current State:**
 - **CLI (`app.py`):** Primary interface; full menu-driven functionality.
-- **Web (`web_app.py`):** Flask app that now exposes multiple routes, including a home page, a `/books` listing view backed by `data.json`, and an `/add` route that serves and processes an HTML form for creating new `Book` records using the same persistence logic as the CLI.
+- **Web (`web_app.py`):** Flask app that exposes a main route (`/`), list routes (`/books`, `/items`) that read/parse `data.json` and pass the collection to Jinja2, and an `/add` route that serves and processes an HTML form for creating new `Book` records. The templates folder contains `index.html`, `books.html` (list view with for-loop over items), and `add.html`.
 
 **Planned Next Step (Incremental):**
 Continue expanding the web interface so that more CLI features are available in the browser. Near-term iterations (v2.2 and beyond) will focus on adding read-only and mutating operations that parallel the CLI menu, such as viewing analytics, searching by author, and toggling the read status directly from the web UI. Over time, the plan is to refactor shared logic (e.g., persistence and business rules) into reusable modules so that both the CLI and Flask layers can evolve without duplication, preserving a clear trajectory of improvement from simple scripts to a multi-interface application.
@@ -70,3 +73,8 @@ This project utilizes modern AI-assisted workflows to accelerate development and
 3.  **Debugging:** Runtime errors will be diagnosed using AI context awareness to rapidly identify logic gaps or data type mismatches, particularly when parsing the JSON response from the API.
 4.  **Dual-Interface Development:** New features will be designed so they can serve both CLI and web clients (e.g., shared logic in services/modules). The Flask app will gradually adopt routes that mirror CLI actions, starting with read-only operations (e.g., viewing the library) and then expanding to full create/update/delete flows, such as the new web-based add-book form.
 5.  **Iterative Planning & Continuous Improvement:** Each assignment iteration intentionally pushes the design forward—from a basic CLI, to persistent storage and API integration, to a shared web interface that reuses the same `load_library()` / `save_library()` persistence logic. This incremental planning approach ensures that changes are small, testable, and traceable in the project documentation, making the evolution of the system explicit rather than accidental.
+
+## Assignment 9 Deliverables (Bringing Your Data to the Web)
+- **Updated Flask application:** `web_app.py` — main route (`/`) and list routes (`/books`, `/items`) handle GET, read/parse `data.json` via `load_library()`, and pass the data collection to `render_template()`.
+- **Templates folder:** Contains `books.html` (and `index.html`, `add.html`). `books.html` receives the collection, uses a Jinja2 `{% for book in books %}` loop, and generates HTML to display the details of each item in a readable table.
+- **Updated project plan:** This document (`project_plan.md`) includes the above feature description and deliverables.

@@ -1,29 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Your Books</title>
-  </head>
-  <body>
-    <h1>Your Books</h1>
-    <nav>
-      <a href="{{ url_for('add') }}">Add Another Book</a> |
-      <a href="{{ url_for('index') }}">Home</a>
-    </nav>
-    {% if books %}
-    <ul>
-      {% for book in books %}
-      <li>
-        {{ loop.index }}.
-        {{ book.title }} by {{ book.author }} ({{ book.pages }} pages)
-        {% if book.is_read %}- Read{% else %}- Not read{% endif %}
-        {% if book.rating %}- Rating: {{ book.rating }}{% endif %}
-      </li>
-      {% endfor %}
-    </ul>
-    {% else %}
-    <p>No books found. <a href="{{ url_for('add') }}">Add your first book</a>.</p>
-    {% endif %}
-  </body>
-</html>
+{% extends "base.html" %}
 
+{% block title %}All Books · Personal Library{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <div>
+      <h2>All Books</h2>
+      <p>Every book stored in your JSON library.</p>
+    </div>
+    <div class="pill">
+      {{ books|length }} total
+    </div>
+  </div>
+
+  <section class="card" aria-label="Books table">
+    {% if books %}
+      <table role="grid">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Genre</th>
+            <th scope="col">Pages</th>
+            <th scope="col">Read</th>
+            <th scope="col">Rating</th>
+            <th scope="col">ISBN</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for book in books %}
+            <tr>
+              <td>
+                <span class="badge">{{ book.id }}</span>
+              </td>
+              <td>{{ book.title }}</td>
+              <td>{{ book.author }}</td>
+              <td>{{ book.genre or '—' }}</td>
+              <td>{{ book.pages }}</td>
+              <td>
+                <span class="status-pill {{ 'read' if book.is_read else 'unread' }}">
+                  {{ 'Read' if book.is_read else 'Unread' }}
+                </span>
+              </td>
+              <td>
+                {% if book.rating %}
+                  <span class="rating">{{ '%.1f'|format(book.rating) }}</span>
+                {% else %}
+                  <span class="empty">—</span>
+                {% endif %}
+              </td>
+              <td>{{ book.isbn or '—' }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">
+        No books found.
+        <a href="{{ url_for('add') }}" style="color: var(--accent); text-decoration: none;">Add your first book</a>.
+      </p>
+    {% endif %}
+  </section>
+{% endblock %}

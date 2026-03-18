@@ -1,27 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Personal Library Manager</title>
-  </head>
-  <body>
-    <h1>Personal Library Manager</h1>
-    <nav>
-      <a href="{{ url_for('add') }}">Add a Book</a> |
-      <a href="{{ url_for('list_books') }}">View All Books</a>
-    </nav>
-    {% if books %}
-    <h2>Current Library (Summary)</h2>
-    <ul>
-      {% for book in books %}
-      <li>
-        {{ book.title }} by {{ book.author }} ({{ book.pages }} pages)
-      </li>
-      {% endfor %}
-    </ul>
-    {% else %}
-    <p>Your library is currently empty. Start by <a href="{{ url_for('add') }}">adding a book</a>.</p>
-    {% endif %}
-  </body>
-</html>
+{% extends "base.html" %}
 
+{% block title %}Overview · Personal Library{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <div>
+      <h2>Overview</h2>
+      <p>Quick snapshot of your library.</p>
+    </div>
+    <div class="pill">
+      {{ books|length }} book{{ books|length != 1 and 's' or '' }} tracked
+    </div>
+  </div>
+
+  <section class="card">
+    <h3>Current Library</h3>
+    {% if books %}
+      <p class="muted">
+        Recently added titles. View the full list for more detail.
+      </p>
+      <ul style="list-style: none; padding: 0; margin: 0;">
+        {% for book in books[:5] %}
+          <li style="padding: 0.25rem 0; display: flex; justify-content: space-between; gap: 1rem;">
+            <span>
+              {{ book.title }}
+              <span class="muted">by {{ book.author }}</span>
+            </span>
+            <span class="muted">{{ book.pages }} pages</span>
+          </li>
+        {% endfor %}
+      </ul>
+      {% if books|length > 5 %}
+        <p class="muted" style="margin-top: 0.75rem;">
+          …and {{ books|length - 5 }} more. View them on the
+          <a href="{{ url_for('list_books') }}" style="color: var(--accent); text-decoration: none;">All Books</a>
+          page.
+        </p>
+      {% endif %}
+    {% else %}
+      <p class="muted">
+        Your library is empty. Start by adding your first book.
+      </p>
+      <a href="{{ url_for('add') }}" class="btn btn-primary">
+        + Add a Book
+      </a>
+    {% endif %}
+  </section>
+{% endblock %}
