@@ -20,7 +20,7 @@
         Recently added titles. View the full list for more detail.
       </p>
       <ul style="list-style: none; padding: 0; margin: 0;">
-        {% for book in books[:5] %}
+        {% for book in preview_books %}
           <li style="padding: 0.25rem 0; display: flex; justify-content: space-between; gap: 1rem;">
             <span>
               {{ book.title }}

@@ -1,5 +1,7 @@
-# This project uses only Python standard library modules (tkinter)
-# No external dependencies are required
+# Web app: Flask + SQLAlchemy (SQLite via Flask-SQLAlchemy)
+# CLI (app.py) uses the standard library for JSON persistence.
 
 # Flask for web_app.py
 flask>=3.0.0
+sqlalchemy>=2.0.0
+flask-sqlalchemy>=3.1.0

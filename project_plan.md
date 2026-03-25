@@ -1,11 +1,11 @@
-# Project Plan: Personal Library Manager (v2.1)
+# Project Plan: Personal Library Manager (v2.2)
 
 ## Section 1: Project Overview
 **Project Title:** Personal Library Manager
 **Development Methodology:** AI-Assisted Iterative Prototyping
 
 **Summary:**
-The Personal Library Manager is a Python-based CLI (Command Line Interface) application designed to help readers organize their book collections. While the initial concept focused on manual entry, this evolved version leverages open APIs to automate data entry and ensures data persistence between sessions. The application serves as a centralized tool for tracking inventory and reading progress, designed for users who want a lightweight, distraction-free management tool with modern conveniences. Following an incremental approach, a minimal Flask web interface was initially introduced to explore browser-based access, with the CLI remaining the primary interface. In the latest iteration, this web interface has matured into a fully functional add-book form that reuses the same persistent JSON data store as the CLI, demonstrating how the project’s planning and architecture support continuous improvement over time.
+The Personal Library Manager is a Python-based CLI (Command Line Interface) application designed to help readers organize their book collections. While the initial concept focused on manual entry, this evolved version leverages open APIs to automate data entry and ensures data persistence between sessions. The application serves as a centralized tool for tracking inventory and reading progress, designed for users who want a lightweight, distraction-free management tool with modern conveniences. Following an incremental approach, a minimal Flask web interface was initially introduced to explore browser-based access, with the CLI remaining the primary interface. The web layer now persists books in a **SQLite** database (`project.db`) using the **SQLAlchemy** ORM via Flask-SQLAlchemy, while the CLI continues to use the shared JSON file (`data.json`) for backward compatibility. This demonstrates how the project’s planning and architecture support continuous improvement over time—from flat files to relational storage for the web tier.
 
 ## Section 2: Core Features (Evolution & Maturity)
 The feature set has been expanded from simple list management to include automation and persistence, transforming the tool from a temporary script into a usable application.
@@ -28,21 +28,24 @@ The feature set has been expanded from simple list management to include automat
 * **Remove a Book:**
     The user can permanently delete a book record from the library.
 
-* **Web-based Add Book Form (New – Assignment 7):**
-    A Flask-powered `/add` route now presents an HTML form that collects all user-facing fields of the `Book` model (ISBN, Title, Author, Genre, Pages, Read status, and Rating). When submitted, the form issues a POST request to the same route, where the server validates and structures the data into a `Book` dictionary, assigns a new sequential `id`, appends it to the in-memory library, and persists the updated collection back to `data.json`. After a successful save, the user is redirected to a page that lists all books, creating a cohesive web-based flow that mirrors and extends the original CLI-driven experience.
+* **Web-based Add Book Form (Assignment 7; storage updated in Assignment 10):**
+    A Flask-powered `/add` route presents an HTML form that collects all user-facing fields of the `Book` model (ISBN, Title, Author, Genre, Pages, Read status, and Rating). When submitted, the server validates the input, builds a SQLAlchemy `Book` instance, adds it to the database session, commits to SQLite, and redirects to the list view. (Earlier iterations used dictionaries and `data.json`; the web tier now uses the ORM.)
 
-* **Bringing Your Data to the Web (Assignment 9):**
-    The Flask app exposes main routes (`/`, `/books`, and `/items`) that handle GET requests. Each list route calls `load_library()` (from `app.py`) to read and parse all data from the persistent `data.json` file, then passes the resulting collection to `render_template()`. The Jinja2 template (`templates/books.html`) receives this data collection, uses a `{% for book in books %}` loop to iterate through it, and generates HTML (a table) to display the details of each item—id, title, author, genre, pages, read status, rating, and ISBN—in a readable format. This single template plus server-side data replaces the need for many static HTML pages; one dynamic page is driven by the current contents of the JSON "database."
+* **Bringing Your Data to the Web (Assignment 9; queries updated in Assignment 10):**
+    The Flask app exposes main routes (`/`, `/books`, and `/items`) that handle GET requests. List routes query all `Book` rows from SQLite via SQLAlchemy (e.g., `select(Book).order_by(Book.id)`) and pass the resulting objects to `render_template()`. The Jinja2 template (`templates/books.html`) uses a `{% for book in books %}` loop to render id, title, author, genre, pages, read status, rating, and ISBN in a table.
 
-### Interface Evolution (v2.1)
+* **SQLite & SQLAlchemy Web Persistence (Assignment 10):**
+    The Flask app is configured with a SQLite database URI pointing at `project.db`. A declarative `Book` model (in `models.py`) maps the eight project fields to a `books` table. On startup (when running `python web_app.py`), the app creates tables if needed and, if the table is empty, can optionally import existing rows from `data.json` so legacy sample data appears in the database without manual SQL.
+
+### Interface Evolution (v2.2)
 *The introduction of a Flask web app (`web_app.py`) represents an incremental pivot toward browser-based access.*
 
 **Current State:**
-- **CLI (`app.py`):** Primary interface; full menu-driven functionality.
-- **Web (`web_app.py`):** Flask app that exposes a main route (`/`), list routes (`/books`, `/items`) that read/parse `data.json` and pass the collection to Jinja2, and an `/add` route that serves and processes an HTML form for creating new `Book` records. The templates folder contains `index.html`, `books.html` (list view with for-loop over items), and `add.html`.
+- **CLI (`app.py`):** Primary interface; full menu-driven functionality; persists to `data.json`.
+- **Web (`web_app.py`):** Flask app with Flask-SQLAlchemy; main route (`/`), list routes (`/books`, `/items`) that query SQLite for all `Book` rows, and `/add` that creates and commits ORM instances. Shared templates: `index.html`, `books.html`, `add.html`. Supporting modules: `extensions.py` (database handle), `models.py` (`Book` model).
 
 **Planned Next Step (Incremental):**
-Continue expanding the web interface so that more CLI features are available in the browser. Near-term iterations (v2.2 and beyond) will focus on adding read-only and mutating operations that parallel the CLI menu, such as viewing analytics, searching by author, and toggling the read status directly from the web UI. Over time, the plan is to refactor shared logic (e.g., persistence and business rules) into reusable modules so that both the CLI and Flask layers can evolve without duplication, preserving a clear trajectory of improvement from simple scripts to a multi-interface application.
+Continue expanding the web interface so that more CLI features are available in the browser. Near-term iterations will focus on read-only and mutating operations that parallel the CLI menu (e.g., analytics, search by author, toggling read status in the UI). Optionally unify CLI persistence with the same SQLite database so both interfaces share one source of truth.
 
 ## Section 3: Data Model
 **Record Entity:** `Book`
@@ -60,7 +63,9 @@ The data model has been updated to support API integration and persistent storag
 | `is_read` | Boolean | A True/False flag indicating if the book has been completed. |
 | `rating` | Float | A 0.0 to 5.0 star rating (optional, defaults to 0.0). |
 
-**Current Implementation (CLI):** The application stores each book as a Python dictionary with all 8 keys. When adding a book, the user provides only `title`, `author`, and `pages`. The remaining fields are auto-populated: `id` (sequential integer), `isbn` and `genre` (empty strings), `is_read` (`False`), and `rating` (`0.0`).
+**Current Implementation (CLI):** The application stores each book as a Python dictionary with all 8 keys in `data.json`. When adding a book, the user provides only `title`, `author`, and `pages`. The remaining fields are auto-populated: `id` (sequential integer), `isbn` and `genre` (empty strings), `is_read` (`False`), and `rating` (`0.0`).
+
+**Web Implementation (Flask):** Each book is represented by the SQLAlchemy `Book` model mapped to the `books` table in `project.db`. The primary key `id` is auto-generated by SQLite. List and add routes use the ORM session (`db.session`) for queries and commits.
 
 ## Section 4: Development Strategy & Tools
 This project utilizes modern AI-assisted workflows to accelerate development and ensure code quality despite the timeline constraints.
@@ -72,9 +77,16 @@ This project utilizes modern AI-assisted workflows to accelerate development and
 2.  **Refactoring & Optimization:** AI tools will be used to review code blocks for efficiency (e.g., converting standard loops to list comprehensions for the search features) and ensuring PEP 8 style compliance.
 3.  **Debugging:** Runtime errors will be diagnosed using AI context awareness to rapidly identify logic gaps or data type mismatches, particularly when parsing the JSON response from the API.
 4.  **Dual-Interface Development:** New features will be designed so they can serve both CLI and web clients (e.g., shared logic in services/modules). The Flask app will gradually adopt routes that mirror CLI actions, starting with read-only operations (e.g., viewing the library) and then expanding to full create/update/delete flows, such as the new web-based add-book form.
-5.  **Iterative Planning & Continuous Improvement:** Each assignment iteration intentionally pushes the design forward—from a basic CLI, to persistent storage and API integration, to a shared web interface that reuses the same `load_library()` / `save_library()` persistence logic. This incremental planning approach ensures that changes are small, testable, and traceable in the project documentation, making the evolution of the system explicit rather than accidental.
+5.  **Iterative Planning & Continuous Improvement:** Each assignment iteration intentionally pushes the design forward—from a basic CLI, to persistent JSON storage, to a web interface that initially reused `load_library()` / `save_library()`, and now to a **SQLite-backed web data layer** with SQLAlchemy. This incremental planning approach keeps changes small, testable, and traceable in the project documentation.
 
 ## Assignment 9 Deliverables (Bringing Your Data to the Web)
-- **Updated Flask application:** `web_app.py` — main route (`/`) and list routes (`/books`, `/items`) handle GET, read/parse `data.json` via `load_library()`, and pass the data collection to `render_template()`.
+- **Updated Flask application:** `web_app.py` — list routes and templates as described in Section 2 (superseded for data access by Assignment 10 below).
 - **Templates folder:** Contains `books.html` (and `index.html`, `add.html`). `books.html` receives the collection, uses a Jinja2 `{% for book in books %}` loop, and generates HTML to display the details of each item in a readable table.
 - **Updated project plan:** This document (`project_plan.md`) includes the above feature description and deliverables.
+
+## Assignment 10 Deliverables (The Great Database Migration)
+- **Updated Flask application:** `web_app.py` — SQLite URI configuration, `db.init_app(app)`, `db.create_all()` on startup, list routes that query all `Book` records via SQLAlchemy, and `/add` that constructs a `Book`, `db.session.add(...)`, and `db.session.commit()`.
+- **New Python modules:** `extensions.py` (Flask-SQLAlchemy `db` instance), `models.py` (SQLAlchemy `Book` model for the eight fields in Section 3).
+- **Dependencies:** `requirements.txt` includes `flask-sqlalchemy`.
+- **SQLite database file:** `project.db` — created when the app runs; may contain seeded rows migrated from `data.json` if the table was initially empty.
+- **Updated project plan:** This document (`project_plan.md`) describes the SQLite/SQLAlchemy web persistence and these deliverables.
