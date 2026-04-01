@@ -119,5 +119,48 @@ def add() -> str:
     return render_template("add.html")
 
 
+@app.route("/edit/<int:item_id>", methods=["GET", "POST"])
+def edit_book(item_id: int):
+    """Display edit form pre-populated with data, and process the update."""
+    book = db.session.get(Book, item_id)
+    if not book:
+        return redirect(url_for("list_books"))
+        
+    if request.method == "POST":
+        book.isbn = request.form.get("isbn", "").strip()
+        book.title = request.form.get("title", "").strip()
+        book.author = request.form.get("author", "").strip()
+        book.genre = request.form.get("genre", "").strip()
+        
+        pages_raw = request.form.get("pages", "").strip()
+        rating_raw = request.form.get("rating", "").strip()
+        book.is_read = request.form.get("is_read") is not None
+
+        try:
+            book.pages = int(pages_raw) if pages_raw else 0
+        except ValueError:
+            book.pages = 0
+
+        try:
+            book.rating = float(rating_raw) if rating_raw else 0.0
+        except ValueError:
+            book.rating = 0.0
+
+        db.session.commit()
+        return redirect(url_for("list_books"))
+
+    return render_template("edit.html", book=book)
+
+
+@app.route("/delete/<int:item_id>", methods=["POST"])
+def delete_book(item_id: int):
+    """Delete a book from the database."""
+    book = db.session.get(Book, item_id)
+    if book:
+        db.session.delete(book)
+        db.session.commit()
+    return redirect(url_for("list_books"))
+
+
 if __name__ == "__main__":
     app.run(debug=True)

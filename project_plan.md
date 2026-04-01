@@ -31,6 +31,9 @@ The feature set has been expanded from simple list management to include automat
 * **Web-based Add Book Form (Assignment 7; storage updated in Assignment 10):**
     A Flask-powered `/add` route presents an HTML form that collects all user-facing fields of the `Book` model (ISBN, Title, Author, Genre, Pages, Read status, and Rating). When submitted, the server validates the input, builds a SQLAlchemy `Book` instance, adds it to the database session, commits to SQLite, and redirects to the list view. (Earlier iterations used dictionaries and `data.json`; the web tier now uses the ORM.)
 
+* **Web-based CRUD (Assignment 11):**
+    The app implements full CRUD logic via dynamic routes: `/edit/<int:item_id>` retrieves a single book and renders a pre-populated form allowing details to be modified and committed to SQLite, while `/delete/<int:item_id>` removes the record from the database. UI controls on the main table seamlessly trigger these update and delete actions.
+
 * **Bringing Your Data to the Web (Assignment 9; queries updated in Assignment 10):**
     The Flask app exposes main routes (`/`, `/books`, and `/items`) that handle GET requests. List routes query all `Book` rows from SQLite via SQLAlchemy (e.g., `select(Book).order_by(Book.id)`) and pass the resulting objects to `render_template()`. The Jinja2 template (`templates/books.html`) uses a `{% for book in books %}` loop to render id, title, author, genre, pages, read status, rating, and ISBN in a table.
 
@@ -90,3 +93,8 @@ This project utilizes modern AI-assisted workflows to accelerate development and
 - **Dependencies:** `requirements.txt` includes `flask-sqlalchemy`.
 - **SQLite database file:** `project.db` — created when the app runs; may contain seeded rows migrated from `data.json` if the table was initially empty.
 - **Updated project plan:** This document (`project_plan.md`) describes the SQLite/SQLAlchemy web persistence and these deliverables.
+
+## Assignment 11 Deliverables (Implementing CRUD)
+- **Update and Delete Logic:** Added dynamic routes `/edit/<int:item_id>` and `/delete/<int:item_id>` within `web_app.py` extending the app's capability to fully mutate database rows natively through the browser.
+- **Updated templates folder:** The `books.html` table features inline edit/delete controls linking to the respective ID-based routes, and the new `edit.html` provides a pre-populated HTML form allowing selective modifications of persistent attributes.
+- **Updated project plan:** This document captures the final culmination of the CRUD migration, enabling the web tier to effectively replace the CLI mutators for book records.
