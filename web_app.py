@@ -28,13 +28,15 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "fallback-dev-secret-key")
 
 # Vercel's Serverless environment has a read-only filesystem except for /tmp.
+# We force SQLite to /tmp if we detect the VERCEL environment.
+uri = os.environ.get("DATABASE_URI")
 if os.environ.get("VERCEL"):
-    default_db_uri = "sqlite:////tmp/project.db"
-else:
-    default_db_uri = f"sqlite:///{BASE_DIR / 'project.db'}"
+    if not uri or uri.startswith("sqlite:///"):
+        uri = "sqlite:////tmp/project.db"
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI", default_db_uri)
+app.config["SQLALCHEMY_DATABASE_URI"] = uri or f"sqlite:///{BASE_DIR / 'project.db'}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+# Added a small comment to ensure a fresh commit triggers Vercel redeploy
 db.init_app(app)
 
 
