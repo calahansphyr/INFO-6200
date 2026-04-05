@@ -1,42 +1,46 @@
 # Personal Library Manager
 
-A Python project including a command-line Personal Library Manager and a minimal Flask web application. The library manager stores books in a JSON file and provides a menu-driven interface to add and list books.
+A Python project implementing a modern Personal Library Manager with full web application architecture powered by Flask, SQLAlchemy, and Vercel. 
+
+## Core Features
+- **User Authentication:** Robust registration and login systems powered by `werkzeug.security`.
+- **Data Privacy & Encryption:** Advanced Fernet encryption secures all string-based PII values (Title, Author, Genre) within the database (`cryptography`).
+- **RESTful API Endpoint:** Export your owned list of books dynamically in JSON format.
+- **Relational Database:** Stores structural ownership and data definitions via `Flask-SQLAlchemy`.
 
 ## Project Structure
+- **web_app.py** — Main Flask application containing all User, Book, and API routes.
+- **models.py** — SQLAlchemy Models mapping to our Relational Tables.
+- **extensions.py** — Context initialization modules.
+- **api/index.py** — Dedicated app entrypoint mapping for Vercel platform distributions.
 
-- **app.py** — Personal Library Manager (command-line). Stores books in `data.json` and provides options to add books, list all books, and exit.
-- **web_app.py** — Minimal Flask web server. Displays "Hello, Web!" at the root URL.
+## Local Installation / Setup
 
-## Requirements
-
-- **app.py** uses only Python standard library modules (no external dependencies).
-- **web_app.py** requires Flask. See `requirements.txt`.
-
-## Installation
-
+1. **Install Dependencies:**
 ```bash
 pip install -r requirements.txt
 ```
 
-## Running the Applications
-
-### Personal Library Manager (command-line)
-
+2. **Environment Variable Setup:**
+Copy the template `.env.example` into a local `.env` and set your runtime variables.
 ```bash
-python app.py
+cp .env.example .env
 ```
+*(You will need to insert a live base64 Fernet key to successfully encrypt database models).*
 
-Menu options:
-1. Add a Book (title, author, page count)
-2. List all Books
-3. Exit
-
-Data is persisted in `data.json` in the project directory.
-
-### Flask Web App
-
+3. **Running Locally (Development):**
 ```bash
 python web_app.py
 ```
+Then navigate to http://127.0.0.1:5000/ to access the application.
 
-Then open http://127.0.0.1:5000/ in your browser.
+4. **Running Locally (Production WSGI Server - Gunicorn):**
+```bash
+gunicorn web_app:app
+```
+
+## Cloud Deployment (Vercel)
+
+This application has been successfully hardened and formatted to deploy rapidly directly up into Vercel Serverless Pipelines.
+Make sure you initialize the environmental `DATABASE_URI`, `SECRET_KEY`, and `ENCRYPTION_KEY` variables inside Vercel's remote Settings configurations.
+The deployment behaves via the `vercel.json` configurations which points the standard endpoints over to the `@vercel/python` builder.

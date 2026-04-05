@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Login - Personal Library{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h2>Login</h2>
+    <p>Sign in to access your library</p>
+  </div>
+</div>
+
+<div class="card" style="max-width: 400px; margin: 0 auto;">
+  <form method="POST" action="{{ url_for('login') }}" style="grid-template-columns: 1fr;">
+    <div class="field">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required>
+    </div>
+    
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required style="border-radius: var(--radius-md); border: 1px solid #d1d5db; background: #f9fafb; padding: 0.45rem 0.6rem; color: var(--text); font-size: 0.9rem;">
+    </div>
+    
+    <div class="actions" style="margin-top: 1rem;">
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Login</button>
+    </div>
+  </form>
+  <p style="text-align: center; font-size: 0.85rem; margin-top: 1.5rem; color: var(--muted);">
+    Don't have an account? <a href="{{ url_for('register') }}" style="color: var(--accent); text-decoration: none;">Register here</a>.
+  </p>
+</div>
+{% endblock %}

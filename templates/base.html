@@ -397,11 +397,26 @@
         </div>
         <nav aria-label="Main">
           <a href="{{ url_for('index') }}" class="nav-link">Overview</a>
-          <a href="{{ url_for('list_books') }}" class="nav-link">All Books</a>
-          <a href="{{ url_for('add') }}" class="nav-link primary">Add Book</a>
+          {% if current_user %}
+            <a href="{{ url_for('list_books') }}" class="nav-link">All Books</a>
+            <a href="{{ url_for('add') }}" class="nav-link primary">Add Book</a>
+            <a href="{{ url_for('logout') }}" class="nav-link" style="color: #ef4444;">Logout</a>
+          {% else %}
+            <a href="{{ url_for('login') }}" class="nav-link">Login</a>
+            <a href="{{ url_for('register') }}" class="nav-link primary">Register</a>
+          {% endif %}
         </nav>
       </header>
       <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div style="padding: 0.85rem; margin-bottom: 1.25rem; border-radius: 8px; background: {% if category == 'success' %}#dcfce7{% else %}#fee2e2{% endif %}; color: {% if category == 'success' %}#15803d{% else %}#b91c1c{% endif %}; border: 1px solid {% if category == 'success' %}#86efac{% else %}#fca5a5{% endif %}; text-align: center; font-size: 0.9rem;">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
         {% block content %}{% endblock %}
       </main>
     </div>

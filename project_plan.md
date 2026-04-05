@@ -98,3 +98,16 @@ This project utilizes modern AI-assisted workflows to accelerate development and
 - **Update and Delete Logic:** Added dynamic routes `/edit/<int:item_id>` and `/delete/<int:item_id>` within `web_app.py` extending the app's capability to fully mutate database rows natively through the browser.
 - **Updated templates folder:** The `books.html` table features inline edit/delete controls linking to the respective ID-based routes, and the new `edit.html` provides a pre-populated HTML form allowing selective modifications of persistent attributes.
 - **Updated project plan:** This document captures the final culmination of the CRUD migration, enabling the web tier to effectively replace the CLI mutators for book records.
+
+## Assignment 12 Deliverables (Members Only)
+- **Authentication & Security:** Created a new `User` model using `werkzeug.security` for hashed passwords. Added a `user_id` foreign key to `Book` mapping ownership dynamically via Flask `session`. 
+- **Encryption Implementation:** Secured the `Book` data (e.g., title, author, genre) at rest utilizing Python `cryptography` via property setters to prevent database leaks.
+- **Updated templates:** Display custom tailored navigation (`login.html`, `register.html`), implementing robust multi-user authentication where users can only view or manage books that they create.
+
+## Assignment 13 Deliverables (RESTful API)
+- **Data Extensibility:** Introduced structured JSON APIs (`/api/v1/items` and `/api/v1/items/<item_id>`). Secured via `@login_required` to permit programmatic data requests by external programs authenticated against the Flask Session.
+
+## Assignment 14 Deliverables (Hardening for Production & Vercel)
+- **Configuration Migration:** Abstracted all hardcoded configurables out into dynamically sourced environment variables using `python-dotenv`. Added `.env.example` as a template structure.
+- **Vercel Readiness:** Generated `vercel.json` and a specific `api/index.py` pipeline route mapping all WSGI activity to `@vercel/python`, prepping project deployment off the local network. 
+- **Repository Setup:** Updated `requirements.txt` to cover new infrastructure modules alongside a `.gitignore` masking `.env` files preventing secret leakages.

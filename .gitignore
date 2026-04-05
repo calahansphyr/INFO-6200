@@ -36,3 +36,8 @@ wheels/
 # OS
 .DS_Store
 Thumbs.db
+
+# Project Specific
+.env
+*.db
+.pytest_cache/
