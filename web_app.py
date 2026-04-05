@@ -26,9 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "fallback-dev-secret-key")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-    "DATABASE_URI", f"sqlite:///{BASE_DIR / 'project.db'}"
-)
+
+# Vercel's Serverless environment has a read-only filesystem except for /tmp.
+if os.environ.get("VERCEL"):
+    default_db_uri = "sqlite:////tmp/project.db"
+else:
+    default_db_uri = f"sqlite:///{BASE_DIR / 'project.db'}"
+
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI", default_db_uri)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 
@@ -89,9 +94,12 @@ def seed_from_json_if_empty() -> None:
 
 
 def init_database() -> None:
-    with app.app_context():
-        db.create_all()
-        seed_from_json_if_empty()
+    try:
+        with app.app_context():
+            db.create_all()
+            seed_from_json_if_empty()
+    except Exception as e:
+        print(f"Serverless DB Initialization warning: {e}")
 
 init_database()
 
